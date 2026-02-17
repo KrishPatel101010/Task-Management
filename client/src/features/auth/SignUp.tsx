@@ -1,51 +1,52 @@
-import { useState} from "react"; 
+import React, { useState } from "react";
 import { signUp } from "./auth.service";
 import { type SignUpRequest } from "../../types/auth.types";
 
 export default function SignUp() {
+  const [formData, setFormData] = useState<SignUpRequest>({
+    name: "",
+    email: "",
+    password: "",
+  });
   const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  async function handleSubmit(e:React.FormEvent<HTMLFormElement>) {
-    e.preventDefault(); 
-    setIsLoading(true);
-    setError("");
-    setMessage("");
-    const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData) as unknown as SignUpRequest;
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  }
+  async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
+    e.preventDefault();
 
     try {
-      await signUp(data);
-      setMessage("Account created successfully!"); 
+      const response = await signUp(formData);
+      setMessage(response.message);
     } catch (err) {
-      setError((err as Error).message);
-    } finally {
-      setIsLoading(false);
+      setErrorMessage((err as Error).message);
     }
   }
 
   return (
     <>
       <form onSubmit={handleSubmit}>
-        
         <label htmlFor="name">Name</label>
-        <input type="text" name="name" />
+        <input onChange={handleChange} type="text" name="name" />
         <br />
 
         <label htmlFor="email">Email</label>
-        <input type="email" name="email" required />
+        <input onChange={handleChange} type="email" name="email" required />
         <br />
 
         <label htmlFor="password">Password</label>
-        <input type="password" name="password" required />
+        <input
+          onChange={handleChange}
+          type="password"
+          name="password"
+          required
+        />
         <br />
 
-        <button type="submit" disabled={isLoading}>
-          {isLoading ? "Signing up..." : "Sign Up"}
-        </button>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        {message && <p style={{ color: "green" }}>{message}</p>}
+        <button type="submit">Sign Up</button>
+        {message ? <p>{message}</p> : <p>{errorMessage}</p>}
       </form>
     </>
   );

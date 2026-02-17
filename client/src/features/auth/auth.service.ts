@@ -1,5 +1,4 @@
-import { type SignUpRequest } from "../../types/auth.types";
-// import { type LoginRequest } from "../../types/auth.types";
+import type { SignUpRequest,LoginRequest } from "../../types/auth.types";
 
 const BASE_URL = "http://localhost:3000";
 
@@ -12,10 +11,22 @@ export const signUp = async (data: SignUpRequest) => {
 
   if (!response.ok) {
     const errorData = await response.json();
-    throw new Error(errorData.message || "Signup failed");
+    throw new Error(errorData.error || "Signup failed");
   }
 
   return await response.json();
 };
 
+export const login = async (data: LoginRequest) => {
+  const response = await fetch(`${BASE_URL}/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.error || "Login failed");
+  }
 
+  return await response.json();
+};
