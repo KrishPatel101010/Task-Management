@@ -1,0 +1,34 @@
+import { Task, User } from "../models/index.ts";
+
+interface Data {
+  title: string;
+  description?: string;
+  status: string;
+  dueDate: Date;
+  userId: string;
+}
+
+export const getTasksService = async () => {
+  const tasks = await Task.find();
+  if (tasks.length === 0) throw new Error("No task found.");
+  return tasks;
+};
+
+export const addTaskService = async (data: Data) => {
+  const userExist = await User.findById(data.userId);
+
+  if (!userExist) throw new Error("Couldn't find user.");
+  await Task.create({ ...data });
+};
+
+export const updateTaskService = async (taskId: string, data: Data) => {
+  const userExist = await User.findById(data.userId);
+  if (!userExist) throw new Error("Couldn't find user.");
+  const taskExist = await Task.findByIdAndUpdate(taskId, data, { new: true });
+  if (!taskExist) throw new Error("Counldn't find task.");
+};
+
+export const deleteTaskService = async (taskId: string) => {
+  const taskExist = await Task.findByIdAndDelete(taskId);
+  if (!taskExist) throw new Error("Task doen't exist.");
+};
