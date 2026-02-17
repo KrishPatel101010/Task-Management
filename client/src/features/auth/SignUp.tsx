@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { signUp } from "./auth.service";
+import { signUp } from "../../services/auth.service";
 import { type SignUpRequest } from "../../types/auth.types";
 
 export default function SignUp() {
