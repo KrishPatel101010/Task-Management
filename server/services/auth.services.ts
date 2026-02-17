@@ -18,3 +18,16 @@ export const signUpService = async (data: {
     password: hashedPassword,
   });
 };
+
+export const loginService = async (data: {
+  email: string;
+  password: string;
+}) => {
+  if (!data.email) throw new Error("Email not provided");
+  if (!data.password) throw new Error("Password not provided");
+
+  const user = await User.findOne({ email: data.email });
+  if (!user) throw new Error("Email not found");
+  const result = await bcrypt.compare(data.password, user.password);
+  if (!result) throw new Error("Password is incorrect");
+};
