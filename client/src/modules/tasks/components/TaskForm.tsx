@@ -1,6 +1,12 @@
 import { useState } from "react";
 import type { TaskRequest, TaskResponse } from "../../../types/task";
 import { addTask, updateTask } from "../api/taskApi";
+import Button from "../../../components/Button";
+import Input from "../../../components/Input";
+import Textarea from "../../../components/Textarea";
+import Select from "../../../components/Select";
+import Alert from "../../../components/Alert";
+import Card from "../../../components/Card";
 
 interface TaskFormProps {
   taskToEdit: TaskResponse | null;
@@ -24,7 +30,7 @@ const TaskForm = ({ taskToEdit, onSuccess }: TaskFormProps) => {
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    >,
   ) => {
     setFormData((prev) => ({
       ...prev,
@@ -32,9 +38,7 @@ const TaskForm = ({ taskToEdit, onSuccess }: TaskFormProps) => {
     }));
   };
 
-  const handleSubmit = async (
-    e: React.FormEvent<HTMLFormElement>
-  ) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setMessage("");
     setErrorMessage("");
@@ -65,80 +69,65 @@ const TaskForm = ({ taskToEdit, onSuccess }: TaskFormProps) => {
   };
 
   return (
-    <div className="bg-white shadow-md rounded-lg p-6">
-      <h3 className="text-xl font-bold text-gray-800 mb-4">{isEditing ? "Edit Task" : "Create Task"}</h3>
+    <Card>
+      <h3 className="text-xl font-bold text-gray-800 mb-4">
+        {isEditing ? "Edit Task" : "Create Task"}
+      </h3>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
-          <input
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            type="text"
-            required
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
+        <Input
+          label="Title"
+          name="title"
+          value={formData.title}
+          onChange={handleChange}
+          type="text"
+          required
+        />
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            rows={3}
-          />
-        </div>
+        <Textarea
+          label="Description"
+          name="description"
+          value={formData.description}
+          onChange={handleChange}
+          rows={3}
+        />
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
-          <select
-            name="status"
-            value={formData.status}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="Pending">Pending</option>
-            <option value="In-Progress">In-Progress</option>
-            <option value="Completed">Completed</option>
-          </select>
-        </div>
+        <Select
+          label="Status"
+          name="status"
+          value={formData.status}
+          onChange={handleChange}
+          options={[
+            { value: "Pending", label: "Pending" },
+            { value: "In-Progress", label: "In-Progress" },
+            { value: "Completed", label: "Completed" },
+          ]}
+        />
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Due Date</label>
-          <input
-            name="dueDate"
-            value={formData.dueDate}
-            onChange={handleChange}
-            type="date"
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
+        <Input
+          label="Due Date"
+          name="dueDate"
+          value={formData.dueDate}
+          onChange={handleChange}
+          type="date"
+        />
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">User ID</label>
-          <input
-            name="userId"
-            value={formData.userId}
-            onChange={handleChange}
-            type="text"
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
+        <Input
+          label="User ID"
+          name="userId"
+          value={formData.userId}
+          onChange={handleChange}
+          type="text"
+        />
 
-        <button
-          type="submit"
-          className="w-full bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded transition-colors font-medium"
-        >
+        <Button type="submit" className="w-full">
           {isEditing ? "Update Task" : "Add Task"}
-        </button>
+        </Button>
       </form>
 
-      {message && <p className="mt-4 bg-green-100 text-green-700 p-3 rounded-md">{message}</p>}
-      {errorMessage && <p className="mt-4 bg-red-100 text-red-700 p-3 rounded-md">{errorMessage}</p>}
-    </div>
+      {message && <Alert type="success" message={message} />}
+      {errorMessage && <Alert type="error" message={errorMessage} />}
+    </Card>
   );
 };
 
