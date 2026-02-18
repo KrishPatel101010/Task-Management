@@ -1,10 +1,11 @@
 import { useState } from "react";
+import Alert from "../../../components/Alert";
+import Button from "../../../components/Button";
+import Card from "../../../components/Card";
+import Input from "../../../components/Input";
 import type { LoginRequest } from "../../../types/auth";
 import { login } from "../api/authAPI";
-import Button from "../../../components/Button";
-import Input from "../../../components/Input";
-import Alert from "../../../components/Alert";
-import Card from "../../../components/Card";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [formData, setFormData] = useState<LoginRequest>({
@@ -17,12 +18,15 @@ export default function Login() {
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   }
-
+  const navigate = useNavigate();
   async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
+    setMessage("");
+  setErrorMessage("");
     try {
       const response = await login(formData);
       setMessage(response.message);
+      navigate("/tasks");
     } catch (err) {
       setErrorMessage((err as Error).message);
     }

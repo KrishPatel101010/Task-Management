@@ -7,7 +7,7 @@ export default function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Navigate to="/sign-up"></Navigate>}></Route>
+        <Route path="/" element={<Navigate to="/sign-up"/>}></Route>
         <Route path="/sign-up" element={<SignUp/>}></Route>
         <Route path="/login" element={<Login/>}></Route>
         <Route path="/tasks" element={<TaskList/>}></Route>
