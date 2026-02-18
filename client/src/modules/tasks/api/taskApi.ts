@@ -25,3 +25,27 @@ export const addTask = async (data: TaskRequest) => {
   }
   return await response.json();
 };
+
+export const updateTask = async (id: string, data: TaskRequest) => {
+  const response = await fetch(`${VITE_API_URL}/tasks/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.Message);
+  }
+  return await response.json();
+};
+
+export const deleteTask = async (id: string) => {
+  const response = await fetch(`${VITE_API_URL}/tasks/${id}`, {
+    method: "DELETE",
+  });
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.Message);
+  }
+  return await response.json();
+};

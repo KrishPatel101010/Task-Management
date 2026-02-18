@@ -1,63 +1,124 @@
 import { useState } from "react";
-import type { TaskRequest } from "../../../types/task";
-import { addTask } from "../api/taskApi";
+import type { TaskRequest, TaskResponse } from "../../../types/task";
+import { addTask, updateTask } from "../api/taskApi";
 
-const TaskForm = () => {
-  const [message, setMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+interface TaskFormProps {
+  taskToEdit: TaskResponse | null;
+  onSuccess: () => void;
+}
+
+const TaskForm = ({ taskToEdit, onSuccess }: TaskFormProps) => {
+  const isEditing = Boolean(taskToEdit);
+
   const [formData, setFormData] = useState<TaskRequest>({
-    title: "",
-    description: "",
-    status: "",
-    dueDate: "",
-    userId: "",
+    title: taskToEdit?.title ?? "",
+    description: taskToEdit?.description ?? "",
+    status: taskToEdit?.status ?? "Pending",
+    dueDate: taskToEdit?.dueDate ?? "",
+    userId: taskToEdit?.userId ?? "",
   });
 
-  function handleChange(
+  const [message, setMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >,
-  ) {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  }
-  async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
+    >
+  ) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
     e.preventDefault();
+    setMessage("");
+    setErrorMessage("");
+
     try {
-      const response = await addTask(formData);
-      setMessage(response.Message);
-    } catch (error) {
-      setErrorMessage((error as Error).message);
+      if (isEditing && taskToEdit) {
+        await updateTask(taskToEdit._id, formData);
+        setMessage("Task updated successfully.");
+      } else {
+        await addTask(formData);
+        setMessage("Task created successfully.");
+      }
+
+      onSuccess();
+
+      if (!isEditing) {
+        setFormData({
+          title: "",
+          description: "",
+          status: "Pending",
+          dueDate: "",
+          userId: "",
+        });
+      }
+    } catch (err) {
+      setErrorMessage((err as Error).message);
     }
-  }
+  };
+
   return (
     <>
+      <h3>{isEditing ? "Edit Task" : "Create Task"}</h3>
+
       <form onSubmit={handleSubmit}>
-        <label htmlFor="title">Title : </label>
-        <input onChange={handleChange} type="text" name="title" />
-        <br />
+        <label>Title</label>
+        <input
+          name="title"
+          value={formData.title}
+          onChange={handleChange}
+          type="text"
+          required
+        />
 
-        <label htmlFor="description">Description : </label>
-        <textarea onChange={handleChange} name="description"></textarea>
-        <br />
+        <label>Description</label>
+        <textarea
+          name="description"
+          value={formData.description}
+          onChange={handleChange}
+        />
 
-        <label htmlFor="status">Status : </label>
-        <select onChange={handleChange} name="status">
+        <label>Status</label>
+        <select
+          name="status"
+          value={formData.status}
+          onChange={handleChange}
+        >
           <option value="Pending">Pending</option>
           <option value="In-Progress">In-Progress</option>
           <option value="Completed">Completed</option>
         </select>
-        <br />
 
-        <label htmlFor="dueDate">DueDate : </label>
-        <input onChange={handleChange} type="date" name="dueDate" />
-        <br />
+        <label>Due Date</label>
+        <input
+          name="dueDate"
+          value={formData.dueDate}
+          onChange={handleChange}
+          type="date"
+        />
 
-        <label htmlFor="userId">UserID : </label>
-        <input onChange={handleChange} type="text" name="userId" />
-        <br />
-        <button type="submit">Add Task</button>
+        <label>User ID</label>
+        <input
+          name="userId"
+          value={formData.userId}
+          onChange={handleChange}
+          type="text"
+        />
+
+        <button type="submit">
+          {isEditing ? "Update Task" : "Add Task"}
+        </button>
       </form>
-      {message ? <p>{message}</p> : <p>{errorMessage}</p>}
+
+      {message && <p>{message}</p>}
+      {errorMessage && <p>{errorMessage}</p>}
     </>
   );
 };
