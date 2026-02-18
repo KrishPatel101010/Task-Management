@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import type { Task } from "../../../types/task";
+import type { TaskResponse } from "../../../types/task";
 import { getTasks } from "../api/taskApi";
-
+import TaskForm from "./TaskForm";
 const TaskList = () => {
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasks, setTasks] = useState<TaskResponse[]>([]);
   const [error, setError] = useState("");
   useEffect(() => {
     const fetchTasks = async () => {
@@ -30,6 +30,8 @@ const TaskList = () => {
           {task.userId}
         </li>
       ))}
+      <TaskForm></TaskForm>
+      
     </>
   );
 };
