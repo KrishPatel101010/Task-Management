@@ -22,7 +22,7 @@ export default function Login() {
   async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
     setMessage("");
-  setErrorMessage("");
+    setErrorMessage("");
     try {
       const response = await login(formData);
       setMessage(response.message);
@@ -30,6 +30,9 @@ export default function Login() {
     } catch (err) {
       setErrorMessage((err as Error).message);
     }
+  }
+  function handleSignUp() {
+    navigate("/sign-up");
   }
 
   return (
@@ -58,6 +61,12 @@ export default function Login() {
           <Button type="submit" className="w-full">
             Login
           </Button>
+          <p>
+            Don't have an Account?
+            <Button type="button" variant="primary" onClick={handleSignUp}>
+              Sign Up
+            </Button>
+          </p>
         </form>
         {message && <Alert type="success" message={message} />}
         {errorMessage && <Alert type="error" message={errorMessage} />}

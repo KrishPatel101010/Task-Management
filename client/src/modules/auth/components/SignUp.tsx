@@ -69,7 +69,7 @@ export default function SignUp() {
           <Button type="submit" className="w-full" variant="secondary">
             Sign Up
           </Button>
-          <p>Already have an Account? <Button variant="primary" onClick={handleLogin}>Login</Button></p>
+          <p>Already have an Account? <Button type="button" variant="primary" onClick={handleLogin}>Login</Button></p>
         </form>
         {message && <Alert type="success" message={message} />}
         {errorMessage && <Alert type="error" message={errorMessage} />}
