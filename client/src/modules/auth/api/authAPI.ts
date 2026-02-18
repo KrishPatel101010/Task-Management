@@ -1,9 +1,9 @@
-import type { SignUpRequest,LoginRequest } from "../../types/auth.types";
+import type { SignUpRequest, LoginRequest } from "../../../types/auth";
 
-const BASE_URL = "http://localhost:3000";
+const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 export const signUp = async (data: SignUpRequest) => {
-  const response = await fetch(`${BASE_URL}/sign-up`, {
+  const response = await fetch(`${VITE_API_URL}/sign-up`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
@@ -18,7 +18,7 @@ export const signUp = async (data: SignUpRequest) => {
 };
 
 export const login = async (data: LoginRequest) => {
-  const response = await fetch(`${BASE_URL}/login`, {
+  const response = await fetch(`${VITE_API_URL}/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),

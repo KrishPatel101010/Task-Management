@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { signUp } from "../../services/auth.service";
-import { type SignUpRequest } from "../../types/auth.types";
+import { signUp } from "../api/authAPI";
+import { type SignUpRequest } from "../../../types/auth";
 
 export default function SignUp() {
   const [formData, setFormData] = useState<SignUpRequest>({

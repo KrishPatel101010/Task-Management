@@ -1,6 +1,6 @@
 import { useState } from "react";
-import type { LoginRequest } from "../../types/auth.types";
-import { login } from "../../services/auth.service";
+import type { LoginRequest } from "../../../types/auth";
+import { login } from "../api/authAPI";
 
 export default function Login() {
   const [formData, setFormData] = useState<LoginRequest>({
