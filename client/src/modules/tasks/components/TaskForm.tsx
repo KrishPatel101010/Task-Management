@@ -65,61 +65,80 @@ const TaskForm = ({ taskToEdit, onSuccess }: TaskFormProps) => {
   };
 
   return (
-    <>
-      <h3>{isEditing ? "Edit Task" : "Create Task"}</h3>
+    <div className="bg-white shadow-md rounded-lg p-6">
+      <h3 className="text-xl font-bold text-gray-800 mb-4">{isEditing ? "Edit Task" : "Create Task"}</h3>
 
-      <form onSubmit={handleSubmit}>
-        <label>Title</label>
-        <input
-          name="title"
-          value={formData.title}
-          onChange={handleChange}
-          type="text"
-          required
-        />
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+          <input
+            name="title"
+            value={formData.title}
+            onChange={handleChange}
+            type="text"
+            required
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
 
-        <label>Description</label>
-        <textarea
-          name="description"
-          value={formData.description}
-          onChange={handleChange}
-        />
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+          <textarea
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            rows={3}
+          />
+        </div>
 
-        <label>Status</label>
-        <select
-          name="status"
-          value={formData.status}
-          onChange={handleChange}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+          <select
+            name="status"
+            value={formData.status}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="Pending">Pending</option>
+            <option value="In-Progress">In-Progress</option>
+            <option value="Completed">Completed</option>
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Due Date</label>
+          <input
+            name="dueDate"
+            value={formData.dueDate}
+            onChange={handleChange}
+            type="date"
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">User ID</label>
+          <input
+            name="userId"
+            value={formData.userId}
+            onChange={handleChange}
+            type="text"
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="w-full bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded transition-colors font-medium"
         >
-          <option value="Pending">Pending</option>
-          <option value="In-Progress">In-Progress</option>
-          <option value="Completed">Completed</option>
-        </select>
-
-        <label>Due Date</label>
-        <input
-          name="dueDate"
-          value={formData.dueDate}
-          onChange={handleChange}
-          type="date"
-        />
-
-        <label>User ID</label>
-        <input
-          name="userId"
-          value={formData.userId}
-          onChange={handleChange}
-          type="text"
-        />
-
-        <button type="submit">
           {isEditing ? "Update Task" : "Add Task"}
         </button>
       </form>
 
-      {message && <p>{message}</p>}
-      {errorMessage && <p>{errorMessage}</p>}
-    </>
+      {message && <p className="mt-4 bg-green-100 text-green-700 p-3 rounded-md">{message}</p>}
+      {errorMessage && <p className="mt-4 bg-red-100 text-red-700 p-3 rounded-md">{errorMessage}</p>}
+    </div>
   );
 };
 
