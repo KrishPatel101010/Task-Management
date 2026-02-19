@@ -78,7 +78,7 @@ export default function Task() {
               ]}
             />
 
-            <Input
+            <Input required
               label="Due Date"
               value={formData.dueDate}
               type="date"

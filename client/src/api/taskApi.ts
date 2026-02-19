@@ -8,7 +8,7 @@ export const getTasks = async () => {
   });
   if (!response.ok) {
     const errorData = await response.json();
-    throw new Error(errorData.error);
+    throw new Error(errorData.message);
   }
   return await response.json();
 };
@@ -21,7 +21,7 @@ export const addTask = async (data: TaskRequest) => {
   });
   if (!response.ok) {
     const errorData = await response.json();
-    throw new Error(errorData.Message);
+    throw new Error(errorData.message || "Invaild Input");
   }
   return await response.json();
 };
@@ -34,7 +34,7 @@ export const updateTask = async (id: string, data: TaskRequest) => {
   });
   if (!response.ok) {
     const errorData = await response.json();
-    throw new Error(errorData.Message);
+    throw new Error(errorData.message || "Invalid Input");
   }
   return await response.json();
 };
@@ -45,7 +45,7 @@ export const deleteTask = async (id: string) => {
   });
   if (!response.ok) {
     const errorData = await response.json();
-    throw new Error(errorData.Message);
+    throw new Error(errorData.message);
   }
   return await response.json();
 };
