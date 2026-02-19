@@ -1,5 +1,5 @@
 import { useTasks } from "../../hooks";
-import { Card, Input, Select, Alert } from "../../components";
+import { Card, Input, Select, Alert, Button } from "../../components";
 import { useState } from "react";
 import type { TaskRequest } from "../../types";
 
@@ -12,7 +12,8 @@ const intialState: TaskRequest = {
 };
 
 export default function Task() {
-  const { tasks, loading, error, delTask, addNewTask, editTask } = useTasks();
+  const { tasks, response, loading, error, delTask, addNewTask, editTask } =
+    useTasks();
   const [formData, setFormData] = useState<TaskRequest>(intialState);
   const [editingId, setEditingId] = useState<string | null>(null);
 
@@ -35,7 +36,6 @@ export default function Task() {
     } else {
       await addNewTask(formData);
     }
-    setFormData(intialState);
   };
 
   const handleEdit = async (id: string, data: TaskRequest) => {
@@ -95,30 +95,27 @@ export default function Task() {
           />
 
           <div className="flex items-center gap-3 pt-2">
-            <button
-              type="submit"
-              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-60"
-              disabled={loading}
-            >
+            <Button type="submit" variant="primary" disabled={loading}>
               {editingId ? "Update" : "Add Task"}
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
-              className="px-4 py-2 border rounded-md text-sm"
+              variant="secondary"
               onClick={() => {
                 setFormData(intialState);
                 setEditingId(null);
               }}
             >
               Reset
-            </button>
+            </Button>
           </div>
+          {error && <Alert type="error" message={error} />}
+          {response && <Alert type="success" message={response} />}
         </form>
       </Card>
 
       <div>
         <h1 className="text-3xl font-bold mb-4">Task List</h1>
-        {error && <Alert type="error" message={error} />}
 
         {loading ? (
           <p className="text-gray-600">Loading...</p>
@@ -138,20 +135,20 @@ export default function Task() {
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <button
+                  <Button
                     onClick={() => handleEdit(task._id, task)}
-                    className="text-blue-600 px-3 py-1 border rounded-md text-sm"
+                    variant="primary"
                     type="button"
                   >
                     Edit
-                  </button>
-                  <button
+                  </Button>
+                  <Button
                     onClick={() => delTask(task._id)}
-                    className="text-red-600 px-3 py-1 border rounded-md text-sm"
+                    variant="danger"
                     type="button"
                   >
                     Delete
-                  </button>
+                  </Button>
                 </div>
               </li>
             ))}

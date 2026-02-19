@@ -3,6 +3,7 @@ import type { TaskRequest, TaskResponse } from "../types";
 import { getTasks, deleteTask, addTask, updateTask } from "../api";
 const useTasks = () => {
   const [tasks, setTasks] = useState<TaskResponse[]>([]);
+  const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const fetchTasks = async () => {
@@ -30,6 +31,7 @@ const useTasks = () => {
     try {
       await deleteTask(id);
       setTasks((prev) => prev.filter((task) => task._id !== id));
+      setResponse("Task Deleted Successfully.");
       setError("");
     } catch (err) {
       setError((err as Error).message);
@@ -42,6 +44,7 @@ const useTasks = () => {
     try {
       const response = await addTask(data);
       setTasks((prev) => [...prev, response.NewTask]);
+      setResponse("Task added successfully.");
       setError("");
     } catch (err) {
       setError((err as Error).message);
@@ -56,6 +59,7 @@ const useTasks = () => {
       setTasks((prev) =>
         prev.map((task) => (task._id === id ? response.UpdatedTask : task)),
       );
+      setResponse("Task updated successfully.");
       setError("");
     } catch (err) {
       setError((err as Error).message);
@@ -66,6 +70,7 @@ const useTasks = () => {
 
   return {
     tasks,
+    response,
     loading,
     error,
     delTask,
