@@ -1,11 +1,8 @@
 import React, { useState } from "react";
-import { signUp } from "../../api/authAPI";
-import { type SignUpRequest } from "../../types/auth";
-import Button from "../../components/Button";
-import Input from "../../components/Input";
-import Alert from "../../components/Alert";
-import Card from "../../components/Card";
 import { useNavigate } from "react-router-dom";
+import { Alert, Button, Card, Input } from "../../components";
+import { useAuth } from "../../hooks";
+import type { SignUpRequest } from "../../types";
 
 export default function SignUp() {
   const [formData, setFormData] = useState<SignUpRequest>({
@@ -13,25 +10,19 @@ export default function SignUp() {
     email: "",
     password: "",
   });
-  const [message, setMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const { response, loading, error, userSignUp } = useAuth();
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   }
+  const navigate = useNavigate();
   async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
-    setMessage("");
-    setErrorMessage("");
-    try {
-      const response = await signUp(formData);
-      setMessage(response.message);
-    } catch (err) {
-      setErrorMessage((err as Error).message);
+    const result = await userSignUp(formData);
+    if (result) {
+      navigate("/login");
     }
   }
-  const navigate = useNavigate();
-
   return (
     <div className="max-w-md mx-auto">
       <Card>
@@ -69,6 +60,7 @@ export default function SignUp() {
           <p>
             Already have an Account?{" "}
             <Button
+            disabled={loading}
               type="button"
               variant="primary"
               onClick={() => navigate("/login")}
@@ -77,8 +69,8 @@ export default function SignUp() {
             </Button>
           </p>
         </form>
-        {message && <Alert type="success" message={message} />}
-        {errorMessage && <Alert type="error" message={errorMessage} />}
+        {response && <Alert type="success" message={response} />}
+        {error && <Alert type="error" message={error} />}
       </Card>
     </div>
   );

@@ -23,7 +23,10 @@ const useTasks = () => {
 
   const delTask = async (id: string) => {
     setLoading(true);
-    if (!window.confirm("Are you sure?")) return setLoading(false);
+    if (!window.confirm("Are you sure?")) {
+      setLoading(false);
+      return;
+    }
     try {
       await deleteTask(id);
       setTasks((prev) => prev.filter((task) => task._id !== id));

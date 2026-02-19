@@ -1,10 +1,8 @@
-export interface SignUpRequest{
-    name : string,
-    email : string,
-    password : string
+interface User {
+  name: string;
+  email: string;
+  password: string;
 }
 
-export interface LoginRequest{
-    email : string,
-    password : string
-}
+export type LoginRequest = Omit<User, "name">;
+export type SignUpRequest = User;

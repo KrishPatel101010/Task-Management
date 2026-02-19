@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Alert, Button, Card, Input, Select, Textarea } from "../../components";
 import type { TaskRequest, TaskResponse } from "../../types/task";
-import { addTask, updateTask } from "../../api/index";
+import { addTask, updateTask } from "../../api";
 
 interface TaskFormProps {
   taskToEdit: TaskResponse | null;
