@@ -14,8 +14,8 @@ export const signUpController = async (req: Request, res: Response) => {
 
 export const loginController = async (req: Request, res: Response) => {
   try {
-    await loginService(req.body);
-    res.status(201).json({ message: "Login successfully" });
+    const token = await loginService(req.body);
+    res.status(201).json({ message: "Login successfully", token: token });
   } catch (error) {
     return res
       .status(400)

@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import db from "./config/db.ts";
 import { authRouter ,taskRouter} from "./routes/index.ts";
 import cors from "cors";
+import jwtAuth from "./middlewares/jwtAuth.ts";
 dotenv.config();
 db();
 
@@ -15,7 +16,7 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use("/",authRouter);
-app.use("/tasks",taskRouter);
+app.use("/tasks",jwtAuth,taskRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:3000`);

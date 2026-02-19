@@ -1,5 +1,7 @@
 import bcrypt from "bcrypt";
 import { User } from "../models/index.ts";
+import generateToken from "../utils/generateToken.ts";
+import { email } from "zod";
 
 export const signUpService = async (data: {
   name: string;
@@ -30,4 +32,7 @@ export const loginService = async (data: {
   if (!user) throw new Error("Email not found");
   const result = await bcrypt.compare(data.password, user.password);
   if (!result) throw new Error("Password is incorrect");
+  const payload = {email : data.email};
+  const token = generateToken(payload);
+  return token;
 };
