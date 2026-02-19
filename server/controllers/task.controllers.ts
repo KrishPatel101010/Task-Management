@@ -17,8 +17,8 @@ export const getTasksController = async (_req: Request, res: Response) => {
 
 export const addTaskController = async (req: Request, res: Response) => {
   try {
-    await addTaskService(req.body);
-    res.status(201).json({ Message: "Task created successfully." });
+    const newTask = await addTaskService(req.body);
+    res.status(201).json({ Message: "Task created successfully." , NewTask : newTask});
   } catch (error) {
     return res.status(400).json({ Message: (error as Error).message });
   }
@@ -28,8 +28,8 @@ export const updateTaskController = async (req: Request, res: Response) => {
   try {
     if (!req.params.id)
       return res.status(201).json({ Error: "Please provide Id." });
-    await updateTaskService(String(req.params.id), req.body);
-    res.status(201).json({ Message: "Task created successfully." });
+    const updatedTask = await updateTaskService(String(req.params.id), req.body);
+    res.status(201).json({ Message: "Task updated successfully." , UpdatedTask : updatedTask});
   } catch (error) {
     return res.status(400).json({ Message: (error as Error).message });
   }

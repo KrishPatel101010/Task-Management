@@ -21,14 +21,16 @@ export const addTaskService = async (data: Data) => {
   const userExist = await User.findById(data.userId);
 
   if (!userExist) throw new Error("Couldn't find user.");
-  await Task.create({ ...data });
+  const newTask = await Task.create({ ...data });
+  return newTask;
 };
 
 export const updateTaskService = async (taskId: string, data: Data) => {
   const userExist = await User.findById(data.userId);
   if (!userExist) throw new Error("Couldn't find user.");
-  const taskExist = await Task.findByIdAndUpdate(taskId, data, {returnDocument : "after"});
-  if (!taskExist) throw new Error("Counldn't find task.");
+  const updatedTask = await Task.findByIdAndUpdate(taskId, data, {returnDocument : "after"});
+  if (!updatedTask) throw new Error("Counldn't find task.");
+  return updatedTask;
 };
 
 export const deleteTaskService = async (taskId: string) => {
