@@ -28,7 +28,7 @@ export default function useAuth() {
       const response = await login(data);
       setResponse(response.message);
       setError("");
-      return true;
+      return response;
     } catch (err) {
       setError((err as Error).message);
       return false;

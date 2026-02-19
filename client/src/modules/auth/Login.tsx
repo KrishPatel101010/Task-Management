@@ -16,12 +16,13 @@ export default function Login() {
   const navigate = useNavigate();
   async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
-    const result = await userLogin(formData);
-    if (result) {
+    const response = await userLogin(formData);
+    if (response.token) {
       navigate("/tasks");
+      localStorage.setItem("auth-token", response.token)
     }
   }
-  function handleSignUp() {
+  const handleSignUp =() =>{
     navigate("/sign-up");
   }
 
