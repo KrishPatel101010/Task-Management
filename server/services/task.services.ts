@@ -27,7 +27,7 @@ export const addTaskService = async (data: Data) => {
 export const updateTaskService = async (taskId: string, data: Data) => {
   const userExist = await User.findById(data.userId);
   if (!userExist) throw new Error("Couldn't find user.");
-  const taskExist = await Task.findByIdAndUpdate(taskId, data, { new: true });
+  const taskExist = await Task.findByIdAndUpdate(taskId, data, {returnDocument : "after"});
   if (!taskExist) throw new Error("Counldn't find task.");
 };
 

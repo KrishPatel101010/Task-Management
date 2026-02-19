@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import type { TaskResponse } from "../../types";
 import { deleteTask, getTasks } from "../../api";
+import { Alert, TaskItem } from "../../components";
+import type { TaskResponse } from "../../types";
 import TaskForm from "./TaskForm";
-import {TaskItem, Alert} from "../../components";
 
 const TaskList = () => {
   const [tasks, setTasks] = useState<TaskResponse[]>([]);

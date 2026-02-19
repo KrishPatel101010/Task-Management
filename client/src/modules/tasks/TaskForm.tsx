@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Alert,Button,Card,Input,Select,Textarea } from "../../components";
+import { Alert, Button, Card, Input, Select, Textarea } from "../../components";
 import type { TaskRequest, TaskResponse } from "../../types/task";
 import { addTask, updateTask } from "../../api/index";
 
@@ -8,9 +8,15 @@ interface TaskFormProps {
   onSuccess: () => void;
 }
 
-const TaskForm = ({ taskToEdit, onSuccess }: TaskFormProps) => {
-  const isEditing = Boolean(taskToEdit);
+const intialState: TaskRequest = {
+  title: "",
+  description: "",
+  status: "Pending",
+  dueDate: "",
+  userId: "",
+};
 
+const TaskForm = ({ taskToEdit, onSuccess }: TaskFormProps) => {
   const [formData, setFormData] = useState<TaskRequest>({
     title: taskToEdit?.title ?? "",
     description: taskToEdit?.description ?? "",
@@ -39,7 +45,7 @@ const TaskForm = ({ taskToEdit, onSuccess }: TaskFormProps) => {
     setErrorMessage("");
 
     try {
-      if (isEditing && taskToEdit) {
+      if (taskToEdit) {
         await updateTask(taskToEdit._id, formData);
         setMessage("Task updated successfully.");
       } else {
@@ -49,14 +55,8 @@ const TaskForm = ({ taskToEdit, onSuccess }: TaskFormProps) => {
 
       onSuccess();
 
-      if (!isEditing) {
-        setFormData({
-          title: "",
-          description: "",
-          status: "Pending",
-          dueDate: "",
-          userId: "",
-        });
+      if (!taskToEdit) {
+        setFormData(intialState);
       }
     } catch (err) {
       setErrorMessage((err as Error).message);
@@ -66,7 +66,7 @@ const TaskForm = ({ taskToEdit, onSuccess }: TaskFormProps) => {
   return (
     <Card>
       <h3 className="text-xl font-bold text-gray-800 mb-4">
-        {isEditing ? "Edit Task" : "Create Task"}
+        {taskToEdit ? "Edit Task" : "Create Task"}
       </h3>
 
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -116,7 +116,7 @@ const TaskForm = ({ taskToEdit, onSuccess }: TaskFormProps) => {
         />
 
         <Button type="submit" className="w-full">
-          {isEditing ? "Update Task" : "Add Task"}
+          {taskToEdit ? "Update Task" : "Add Task"}
         </Button>
       </form>
 
