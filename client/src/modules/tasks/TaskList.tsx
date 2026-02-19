@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import type { TaskResponse } from "../../../types/task";
-import { deleteTask, getTasks } from "../api/taskApi";
+import type { TaskResponse } from "../../types";
+import { deleteTask, getTasks } from "../../api";
 import TaskForm from "./TaskForm";
-import TaskItem from "../../../components/TaskItem";
-import Alert from "../../../components/Alert";
+import {TaskItem, Alert} from "../../components";
 
 const TaskList = () => {
   const [tasks, setTasks] = useState<TaskResponse[]>([]);
@@ -21,27 +20,17 @@ const TaskList = () => {
   };
 
   useEffect(() => {
-    let ignore = false;
-
     const fetchData = async () => {
       try {
         const data = await getTasks();
-        if (!ignore) {
-          setTasks(data.Tasks);
-          setError("");
-        }
+        setTasks(data.Tasks);
+        setError("");
       } catch (err) {
-        if (!ignore) {
-          setError((err as Error).message);
-        }
+        setError((err as Error).message);
       }
     };
 
     fetchData();
-
-    return () => {
-      ignore = true;
-    };
   }, []);
 
   const handleDelete = async (id: string) => {

@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { Login, SignUp } from "./modules/auth/components/index";
-import { TaskList } from "./modules/tasks/components/index";
+import { Login, SignUp } from "./modules/auth/index";
+import { TaskList } from "./modules/tasks";
 
 export default function App() {
   return (

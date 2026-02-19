@@ -1,12 +1,7 @@
 import { useState } from "react";
-import type { TaskRequest, TaskResponse } from "../../../types/task";
-import { addTask, updateTask } from "../api/taskApi";
-import Button from "../../../components/Button";
-import Input from "../../../components/Input";
-import Textarea from "../../../components/Textarea";
-import Select from "../../../components/Select";
-import Alert from "../../../components/Alert";
-import Card from "../../../components/Card";
+import { Alert,Button,Card,Input,Select,Textarea } from "../../components";
+import type { TaskRequest, TaskResponse } from "../../types/task";
+import { addTask, updateTask } from "../../api/index";
 
 interface TaskFormProps {
   taskToEdit: TaskResponse | null;

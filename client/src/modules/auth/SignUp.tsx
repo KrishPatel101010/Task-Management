@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { signUp } from "../api/authAPI";
-import { type SignUpRequest } from "../../../types/auth";
-import Button from "../../../components/Button";
-import Input from "../../../components/Input";
-import Alert from "../../../components/Alert";
-import Card from "../../../components/Card";
+import { signUp } from "../../api/authAPI";
+import { type SignUpRequest } from "../../types/auth";
+import Button from "../../components/Button";
+import Input from "../../components/Input";
+import Alert from "../../components/Alert";
+import Card from "../../components/Card";
 import { useNavigate } from "react-router-dom";
 
 export default function SignUp() {
@@ -22,7 +22,7 @@ export default function SignUp() {
   async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
     setMessage("");
-  setErrorMessage("");
+    setErrorMessage("");
     try {
       const response = await signUp(formData);
       setMessage(response.message);
@@ -31,9 +31,6 @@ export default function SignUp() {
     }
   }
   const navigate = useNavigate();
-  function handleLogin(){
-    navigate("/login");
-  }
 
   return (
     <div className="max-w-md mx-auto">
@@ -69,7 +66,16 @@ export default function SignUp() {
           <Button type="submit" className="w-full" variant="secondary">
             Sign Up
           </Button>
-          <p>Already have an Account? <Button type="button" variant="primary" onClick={handleLogin}>Login</Button></p>
+          <p>
+            Already have an Account?{" "}
+            <Button
+              type="button"
+              variant="primary"
+              onClick={() => navigate("/login")}
+            >
+              Login
+            </Button>
+          </p>
         </form>
         {message && <Alert type="success" message={message} />}
         {errorMessage && <Alert type="error" message={errorMessage} />}

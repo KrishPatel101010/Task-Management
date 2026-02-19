@@ -1,10 +1,10 @@
 import { useState } from "react";
-import Alert from "../../../components/Alert";
-import Button from "../../../components/Button";
-import Card from "../../../components/Card";
-import Input from "../../../components/Input";
-import type { LoginRequest } from "../../../types/auth";
-import { login } from "../api/authAPI";
+import Alert from "../../components/Alert";
+import Button from "../../components/Button";
+import Card from "../../components/Card";
+import Input from "../../components/Input";
+import type { LoginRequest } from "../../types/auth";
+import { login } from "../../api/authAPI";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {

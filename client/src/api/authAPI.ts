@@ -1,4 +1,4 @@
-import type { SignUpRequest, LoginRequest } from "../../../types/auth";
+import type { SignUpRequest, LoginRequest } from "../types/auth";
 
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
