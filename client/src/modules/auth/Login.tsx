@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Alert, Button, Card, Input } from "../../components";
+import { useAuthContext } from "../../context/AuthContext";
 import { useAuth, useForm } from "../../hooks";
 import type { LoginRequest } from "../../types/auth";
 export default function Login() {
@@ -8,15 +9,13 @@ export default function Login() {
     password: "",
   });
   const { response, loading, error, userLogin } = useAuth();
-
+  const { login } = useAuthContext();
   const navigate = useNavigate();
   const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const response = await userLogin(formData);
-    if (response.token) {
-      localStorage.setItem("auth-token", response.token);
-      navigate("/tasks");
-    }
+    const result = await userLogin(formData);
+    login(result.token);
+    navigate("/tasks");
   };
   const handleSignUp = () => {
     navigate("/sign-up");

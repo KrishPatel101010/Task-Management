@@ -1,8 +1,7 @@
-import type { TaskRequest } from "../types/index";
+import type { TaskRequest } from "../types";
 
 const VITE_API_URL = import.meta.env.VITE_API_URL;
-const token = localStorage.getItem("auth-token");
-export const getTasks = async () => {
+export const getTasks = async (token: string) => {
   const response = await fetch(`${VITE_API_URL}/tasks`, {
     method: "GET",
     headers: {
@@ -17,7 +16,7 @@ export const getTasks = async () => {
   return await response.json();
 };
 
-export const addTask = async (data: TaskRequest) => {
+export const addTask = async (token: string, data: TaskRequest) => {
   const response = await fetch(`${VITE_API_URL}/tasks`, {
     method: "POST",
     headers: {
@@ -33,7 +32,11 @@ export const addTask = async (data: TaskRequest) => {
   return await response.json();
 };
 
-export const updateTask = async (id: string, data: TaskRequest) => {
+export const updateTask = async (
+  token: string,
+  id: string,
+  data: TaskRequest,
+) => {
   const response = await fetch(`${VITE_API_URL}/tasks/${id}`, {
     method: "PUT",
     headers: {
@@ -49,7 +52,7 @@ export const updateTask = async (id: string, data: TaskRequest) => {
   return await response.json();
 };
 
-export const deleteTask = async (id: string) => {
+export const deleteTask = async (token: string, id: string) => {
   const response = await fetch(`${VITE_API_URL}/tasks/${id}`, {
     method: "DELETE",
     headers: {

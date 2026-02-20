@@ -2,6 +2,7 @@ import { useState } from "react";
 import { login, signUp } from "../api";
 import type { LoginRequest, SignUpRequest } from "../types";
 
+
 export default function useAuth() {
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
@@ -16,12 +17,13 @@ export default function useAuth() {
       return true;
     } catch (err) {
       setError((err as Error).message);
+      setResponse("");
       return false;
     } finally {
       setLoading(false);
     }
   };
-  
+
   const userLogin = async (data: LoginRequest) => {
     setLoading(true);
     try {
@@ -29,8 +31,10 @@ export default function useAuth() {
       setResponse(response.message);
       setError("");
       return response;
+      
     } catch (err) {
       setError((err as Error).message);
+      setResponse("");
       return false;
     } finally {
       setLoading(false);

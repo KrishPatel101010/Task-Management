@@ -12,7 +12,7 @@ const intialState: TaskRequest = {
 export default function useTaskForm() {
   const { formData, setFormValues, reset, handleChange } =
     useForm<TaskRequest>(intialState);
-  const { tasks, response, loading, error, delTask, addNewTask, editTask } =
+  const { tasks, response, loading, error, removeTask, addNewTask, editTask } =
     useTask();
   const [editingId, setEditingId] = useState<string | null>(null);
   const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
@@ -36,7 +36,7 @@ export default function useTaskForm() {
     formData,
     editingId,
     tasks,
-    delTask,
+    removeTask,
     setFormValues,
     handleReset,
     handleChange,

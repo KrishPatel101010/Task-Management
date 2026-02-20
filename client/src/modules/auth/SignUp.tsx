@@ -18,8 +18,7 @@ export default function SignUp() {
     const result = await userSignUp(formData);
     if (result) {
       navigate("/login");
-    }
-    else{
+    } else {
       navigate("/sign-up");
     }
   };
