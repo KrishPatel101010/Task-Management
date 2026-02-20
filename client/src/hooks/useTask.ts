@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import type { TaskRequest, TaskResponse } from "../types";
 import { getTasks, deleteTask, addTask, updateTask } from "../api";
 import { useAuthContext } from "../context/AuthContext";
@@ -8,23 +8,23 @@ const useTasks = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const { token } = useAuthContext();
-  const fetchTasks = useCallback(async () => {
-    setLoading(true);
-    try {
-      if (!token) return;
-      const result = await getTasks(token);
-      setTasks(result.Tasks);
-      setError("");
-    } catch (err) {
-      setError((err as Error).message);
-      setResponse("");
-    } finally {
-      setLoading(false);
-    }
-  }, [token]);
   useEffect(() => {
+    const fetchTasks = async () => {
+      if (!token) return;
+      setLoading(true);
+      try {
+        const result = await getTasks(token);
+        setTasks(result.Tasks);
+        setError("");
+      } catch (err) {
+        setError((err as Error).message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchTasks();
-  }, [fetchTasks]);
+  }, [token]);
 
   const removeTask = async (id: string) => {
     setLoading(true);

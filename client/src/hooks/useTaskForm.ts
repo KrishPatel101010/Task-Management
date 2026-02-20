@@ -20,8 +20,10 @@ export default function useTaskForm() {
     if (editingId) {
       await editTask(editingId, formData);
       setEditingId(null);
+      reset();
     } else {
       await addNewTask(formData);
+      reset();
     }
   };
   const handleEdit = (id: string, data: TaskRequest) => {
