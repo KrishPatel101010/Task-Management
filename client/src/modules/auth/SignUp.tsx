@@ -1,28 +1,28 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Alert, Button, Card, Input } from "../../components";
-import { useAuth } from "../../hooks";
+import { useAuth, useForm } from "../../hooks";
 import type { SignUpRequest } from "../../types";
 
 export default function SignUp() {
-  const [formData, setFormData] = useState<SignUpRequest>({
+  const { formData, handleChange } = useForm<SignUpRequest>({
     name: "",
     email: "",
     password: "",
   });
   const { response, loading, error, userSignUp } = useAuth();
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  }
   const navigate = useNavigate();
-  async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
+  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     const result = await userSignUp(formData);
     if (result) {
       navigate("/login");
     }
-  }
+    else{
+      navigate("/sign-up");
+    }
+  };
   return (
     <div className="max-w-md mx-auto">
       <Card>
@@ -60,7 +60,7 @@ export default function SignUp() {
           <p>
             Already have an Account?{" "}
             <Button
-            disabled={loading}
+              disabled={loading}
               type="button"
               variant="primary"
               onClick={() => navigate("/login")}

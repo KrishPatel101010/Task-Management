@@ -1,48 +1,21 @@
-import { useTasks } from "../../hooks";
-import { Card, Input, Select, Alert, Button } from "../../components";
-import { useState } from "react";
-import type { TaskRequest } from "../../types";
-
-const intialState: TaskRequest = {
-  title: "",
-  description: "",
-  status: "Pending",
-  dueDate: "",
-  userId: "",
-};
+import { Alert, Button, Card, Input, Select } from "../../components";
+import useTaskForm from "../../hooks/useTaskForm";
 
 export default function Task() {
-  const { tasks, response, loading, error, delTask, addNewTask, editTask } =
-    useTasks();
-  const [formData, setFormData] = useState<TaskRequest>(intialState);
-  const [editingId, setEditingId] = useState<string | null>(null);
-
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >,
-  ) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
-
-  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (editingId) {
-      await editTask(editingId, formData);
-      setEditingId(null);
-    } else {
-      await addNewTask(formData);
-    }
-  };
-
-  const handleEdit = async (id: string, data: TaskRequest) => {
-    setFormData({ ...data });
-    setEditingId(id);
-  };
-
+  const {
+    formData,
+    tasks,
+    delTask,
+    editingId,
+    handleReset,
+    handleChange,
+    handleSubmit,
+    handleEdit,
+    loading,
+    error,
+    response,
+  } = useTaskForm();
+ 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-8">
       <Card>
@@ -78,7 +51,8 @@ export default function Task() {
               ]}
             />
 
-            <Input required
+            <Input
+              required
               label="Due Date"
               value={formData.dueDate}
               type="date"
@@ -98,14 +72,7 @@ export default function Task() {
             <Button type="submit" variant="primary" disabled={loading}>
               {editingId ? "Update" : "Add Task"}
             </Button>
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={() => {
-                setFormData(intialState);
-                setEditingId(null);
-              }}
-            >
+            <Button type="button" variant="secondary" onClick={handleReset}>
               Reset
             </Button>
           </div>

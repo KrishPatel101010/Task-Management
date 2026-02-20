@@ -1,30 +1,26 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Alert, Button, Card, Input } from "../../components";
-import {useAuth} from "../../hooks";
+import { useAuth, useForm } from "../../hooks";
 import type { LoginRequest } from "../../types/auth";
-
 export default function Login() {
-  const [formData, setFormData] = useState<LoginRequest>({
+  const { formData, handleChange } = useForm<LoginRequest>({
     email: "",
     password: "",
   });
   const { response, loading, error, userLogin } = useAuth();
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  }
+
   const navigate = useNavigate();
-  async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
+  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     const response = await userLogin(formData);
     if (response.token) {
+      localStorage.setItem("auth-token", response.token);
       navigate("/tasks");
-      localStorage.setItem("auth-token", response.token)
     }
-  }
-  const handleSignUp =() =>{
+  };
+  const handleSignUp = () => {
     navigate("/sign-up");
-  }
+  };
 
   return (
     <div className="max-w-md mx-auto">
