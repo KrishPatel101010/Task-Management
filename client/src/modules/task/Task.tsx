@@ -1,10 +1,7 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { Alert, Button, Card, Input, Select } from "../../components";
-import useTaskForm from "../../hooks/useTaskForm";
+import { useAuthCheck, useTaskForm } from "../../hooks";
 
 export default function Task() {
-  const navigate = useNavigate();
   const {
     formData,
     tasks,
@@ -18,20 +15,7 @@ export default function Task() {
     error,
     response,
   } = useTaskForm();
-
-  useEffect(() => {
-    const checkAuth = () => {
-      const token = localStorage.getItem("auth-token");
-      if (!token) {
-        navigate("/login");
-      }
-    };
-
-    checkAuth();
-    const interval = setInterval(checkAuth, 1000); // Check every second
-
-    return () => clearInterval(interval);
-  }, [navigate]);
+  useAuthCheck();
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-8">
